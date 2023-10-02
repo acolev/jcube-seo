@@ -1,6 +1,6 @@
 <?php
 
-namespace jCube\Controllers;
+namespace jCube\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
