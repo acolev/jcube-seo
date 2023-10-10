@@ -20,18 +20,18 @@ class SeoName extends Model
     'path',
     'locale',
   ];
-
+  
   static public function boot()
   {
     parent::boot();
-
+    
     self::saved(function (SeoName $model) {
       if ($model->getOriginal('path') !== $model->path) {
         self::moveChildren($model);
       }
     });
   }
-
+  
   public function fullPath(): Attribute
   {
     $ids = explode(',', $this->path);
@@ -45,19 +45,19 @@ class SeoName extends Model
       get: fn() => implode('/', [...$parents, $this->name])
     );
   }
-
+  
   public function nextPath(): Attribute
   {
     return Attribute::make(
       fn($value) => implode(',', array_filter([$this?->path, $this?->object_id]))
     );
   }
-
+  
   public function save(array $options = []): bool
   {
     $exists = false;
     $exists_name = false;
-
+    
     if ($this->getOriginal('name') !== $this->name) {
       if (!$this->exists) {
         $exists = self::where('object_type', $this->object_type)
@@ -70,23 +70,23 @@ class SeoName extends Model
         ->where('locale', $this->locale)
         ->exists();
     }
-
+    
     if ($exists || $exists_name) {
       return false;
     }
-
+    
     return parent::save($options);
   }
-
-  static public function getUrl($object_type, $object_id, $lang): string
+  
+  static public function getUrl($object_type, $object_id, $lang, $prefix = null): string|null
   {
     $item = self::where('object_type', $object_type)
       ->where('object_id', $object_id)
       ->where('locale', $lang)
       ->first();
-    return $item?->full_path;
+    return '/' . implode('/', array_filter([$prefix, $item?->full_path]));
   }
-
+  
   static private function moveChildren(SeoName $model): void
   {
     if ($model->getOriginal('path')) {
@@ -94,7 +94,7 @@ class SeoName extends Model
       $children = self::where('path', 'like', $child_path . '%')
         ->orWhere('path', $child_path)
         ->where('object_type', $model->object_type)->get();
-
+      
       foreach ($children as $child) {
         $child->path = preg_replace('/^' . $model->getOriginal('path') . '/m', $model->path, $child->path);
         if ($model->path === null) $child->path = substr($child->path, 1);
@@ -104,7 +104,7 @@ class SeoName extends Model
       $child_path = $model->object_id;
       $children = self::where('path', 'like', $child_path . '%')
         ->where('object_type', $model->object_type)->get();
-
+      
       foreach ($children as $child) {
         $child->path = implode(',', [$model->path, $child->path]);
         $child->save();

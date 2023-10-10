@@ -37,6 +37,20 @@ trait hasSeoName
     );
   }
   
+  public function switchLinks(): Attribute
+  {
+    $items = [];
+    if (class_exists(\App\Models\Language::class)) {
+      $langs = \App\Models\Language::class::all();
+      foreach ($langs as $lang) {
+        $items[$lang->code] = SeoName::getUrl(self::class, $this->id, $lang->code, $lang->is_default ? null : $lang->code);
+      }
+    }
+    return Attribute::make(
+      fn() => $items
+    );
+  }
+  
   
   public function path(): MorphOne
   {
@@ -66,7 +80,7 @@ trait hasSeoName
       ->where('object_id', $this->id)
       ->get();
     foreach ($names as $name) {
-      $name->path = $path > 0 ? $path : null;
+      $name->path = $path;
       $name->save();
     }
     
