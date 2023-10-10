@@ -79,8 +79,11 @@ trait hasSeoName
     $names = SeoName::where('object_type', self::class)
       ->where('object_id', $this->id)
       ->get();
+    $next = SeoName::where('object_type', self::class)
+      ->where('object_id', $path)
+      ->first();
     foreach ($names as $name) {
-      $name->path = $path;
+      $name->path = $next?->nextPath ?: null;
       $name->save();
     }
     
