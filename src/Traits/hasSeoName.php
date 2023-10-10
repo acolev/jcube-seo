@@ -69,6 +69,7 @@ trait hasSeoName
       $name->path = $path > 0 ? $path : null;
       $name->save();
     }
+    
   }
   
 }
