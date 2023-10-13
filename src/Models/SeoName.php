@@ -71,8 +71,10 @@ class SeoName extends Model
         ->exists();
     }
     
-    if ($exists || $exists_name) {
+    if ($exists) {
       return false;
+    } elseif ($exists_name) {
+      $this->name = implode('-', [$this->id, $this->name]);
     }
     
     return parent::save($options);

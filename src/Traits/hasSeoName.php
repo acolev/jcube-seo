@@ -60,6 +60,7 @@ trait hasSeoName
   
   public function saveName($item, $locale)
   {
+    if (!isset($item['parent'])) $item['parent'] = self::class;
     $name = SeoName::where('object_type', self::class)
       ->where('object_id', $this->id)
       ->where('locale', $locale)
