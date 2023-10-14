@@ -58,7 +58,7 @@ trait hasSeoName
     return $this->morphOne(SeoName::class, "object")->where('locale', self::$lang ?: Lang::getLocale());
   }
   
-  public function saveName($item, $locale)
+  public function saveSeoName($item, $locale)
   {
     if (!isset($item['parent'])) $item['parent'] = self::class;
     $name = SeoName::where('object_type', self::class)
@@ -75,7 +75,7 @@ trait hasSeoName
     $name->save();
   }
   
-  public function moveName($path)
+  public function moveSeoName($path)
   {
     $names = SeoName::where('object_type', self::class)
       ->where('object_id', $this->id)

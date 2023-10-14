@@ -74,7 +74,7 @@ class SeoName extends Model
     if ($exists) {
       return false;
     } elseif ($exists_name) {
-      $this->name = implode('-', [$this->id, $this->name]);
+      $this->name = implode('-', [$this->id ?: rand(99, 9999), $this->name]);
     }
     
     return parent::save($options);
