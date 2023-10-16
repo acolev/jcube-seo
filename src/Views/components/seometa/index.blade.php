@@ -20,6 +20,6 @@
 </div>
 @if($extended)
   <div class="form-group">
-    <x-form.input type="text" name="raw_html" data-field="raw_html" label="HTML" :value="$raw_html" rows="4"/>
+    <x-form.html name="raw_html" data-field="raw_html" label="HTML" :value="$raw_html" rows="4"/>
   </div>
 @endif
