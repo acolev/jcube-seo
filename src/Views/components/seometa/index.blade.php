@@ -8,14 +8,14 @@
 ])
 
 <div class="form-group">
-  <x-form.input name="meta_title" data-field="meta_title" label="Meta title" :value="$meta_title"/>
+  <x-input name="meta_title" data-field="meta_title" label="Meta title" :value="$meta_title"/>
 </div>
 <div class="form-group">
-  <x-form.input type="text" name="meta_description" data-field="meta_description" label="Meta Description" :value="@$meta_description"
+  <x-input type="text" name="meta_description" data-field="meta_description" label="Meta Description" :value="@$meta_description"
                 rows="4"/>
 </div>
 <div class="form-group">
-  <x-form.input type="text" name="meta_keywords" data-field="meta_keywords" label="Meta Keywords" :value="$meta_keywords"
+  <x-input type="text" name="meta_keywords" data-field="meta_keywords" label="Meta Keywords" :value="$meta_keywords"
                 rows="4"/>
 </div>
 @if($extended)
